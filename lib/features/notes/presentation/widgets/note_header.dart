@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import '../../../../common_widgets/verified_badge.dart';
 
 class NoteHeaderWidget extends StatelessWidget {
   final String title;
   final double rating;
   final double price;
   final bool isDonation;
+  final bool isVerified;
 
   const NoteHeaderWidget({
     super.key,
@@ -12,18 +14,18 @@ class NoteHeaderWidget extends StatelessWidget {
     required this.rating,
     required this.price,
     required this.isDonation,
+    this.isVerified = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title
           Text(
             title,
             style: theme.textTheme.headlineSmall?.copyWith(
@@ -31,15 +33,13 @@ class NoteHeaderWidget extends StatelessWidget {
               color: theme.colorScheme.onSurface,
             ),
           ),
-          
           const SizedBox(height: 12),
-          
-          // Rating and status badges
           Wrap(
             spacing: 12,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: Colors.amber.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
@@ -62,7 +62,8 @@ class NoteHeaderWidget extends StatelessWidget {
               ),
               if (isDonation)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: Colors.green.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
@@ -76,28 +77,14 @@ class NoteHeaderWidget extends StatelessWidget {
                     ),
                   ),
                 )
-              else
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color:  const Color.fromARGB(255, 18, 129, 21),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    'Verified',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onPrimaryContainer,
-                    ),
-                  ),
+              else if (isVerified)
+                const VerifiedBadge(
+                  fontSize: 12,
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 ),
             ],
           ),
-          
           const SizedBox(height: 16),
-          
-          // Price
           if (!isDonation)
             Text(
               '₹${price.toStringAsFixed(2)}',

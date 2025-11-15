@@ -15,9 +15,11 @@ class NoteModel {
   final DateTime? updatedAt;
   final int viewCount;
   final int purchaseCount;
-  final double earnings; 
-  final bool isVerified; 
-  final int pageCount; 
+  final double earnings;
+  final bool isVerified;
+  final int pageCount;
+  final bool isCopyrighted;
+  final String? copyrightReason;
 
   NoteModel({
     required this.noteId,
@@ -37,6 +39,8 @@ class NoteModel {
     this.earnings = 0.0,
     this.isVerified = false,
     this.pageCount = 0,
+    this.isCopyrighted = false,
+    this.copyrightReason,
   });
 
   Map<String, dynamic> toMap() {
@@ -58,15 +62,16 @@ class NoteModel {
       'earnings': earnings,
       'isVerified': isVerified,
       'pageCount': pageCount,
+      'isCopyrighted': isCopyrighted,
+      'copyrightReason': copyrightReason,
     };
   }
 
   factory NoteModel.fromMap(Map<String, dynamic> map, String docId) {
-    
     final descriptionValue = map['description'] as String?;
-    
+
     final ownerUidValue = map['ownerUid'] ?? '';
-    
+
     return NoteModel(
       noteId: map['noteId'] ?? docId,
       title: map['title'] ?? '',
@@ -74,7 +79,8 @@ class NoteModel {
       description: descriptionValue,
       ownerUid: ownerUidValue,
       isDonation: map['isDonation'] ?? false,
-      price: map['isDonation'] == true ? null : (map['price'] as num?)?.toDouble(),
+      price:
+          map['isDonation'] == true ? null : (map['price'] as num?)?.toDouble(),
       rating: (map['rating'] as num?)?.toDouble() ?? 0.0,
       fileName: map['fileName'] ?? '',
       fileEncodedData: map['fileEncodedData'] ?? '',
@@ -85,6 +91,8 @@ class NoteModel {
       earnings: (map['earnings'] as num?)?.toDouble() ?? 0.0,
       isVerified: map['isVerified'] ?? false,
       pageCount: map['pageCount'] ?? 0,
+      isCopyrighted: map['isCopyrighted'] ?? false,
+      copyrightReason: map['copyrightReason'] as String?,
     );
   }
 
@@ -109,6 +117,8 @@ class NoteModel {
     double? earnings,
     bool? isVerified,
     int? pageCount,
+    bool? isCopyrighted,
+    String? copyrightReason,
   }) {
     return NoteModel(
       noteId: noteId,
@@ -128,6 +138,8 @@ class NoteModel {
       earnings: earnings ?? this.earnings,
       isVerified: isVerified ?? this.isVerified,
       pageCount: pageCount ?? this.pageCount,
+      isCopyrighted: isCopyrighted ?? this.isCopyrighted,
+      copyrightReason: copyrightReason ?? this.copyrightReason,
     );
   }
 
