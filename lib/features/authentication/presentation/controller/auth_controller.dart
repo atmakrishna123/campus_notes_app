@@ -61,18 +61,36 @@ class AuthController extends ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
-    _errorMessage = null; // Clear previous errors before attempting login
+    _errorMessage = null; 
     _setLoading(true);
     _justLoggedIn = false;
 
-    final result = await _authService.login(email: email, password: password);
+    try {
+      final result = await _authService.login(email: email, password: password);
 
-    if (result == null) {
-      _isLoggedIn = true;
-      _justLoggedIn = true;
-      _errorMessage = null; // Ensure no error on success
-    } else {
-      _errorMessage = result; // Set the error message
+      if (result == null) {
+        _isLoggedIn = true;
+        _justLoggedIn = true;
+        _errorMessage = null; 
+      } else {
+        // Map common Firebase auth errors to user-friendly messages
+        if (result.toLowerCase().contains('password') || 
+            result.toLowerCase().contains('wrong-password') ||
+            result.toLowerCase().contains('invalid-credential')) {
+          _errorMessage = 'Invalid password';
+        } else if (result.toLowerCase().contains('user-not-found') || 
+                   result.toLowerCase().contains('no user')) {
+          _errorMessage = 'No account found with this email';
+        } else if (result.toLowerCase().contains('invalid-email')) {
+          _errorMessage = 'Invalid email address';
+        } else if (result.toLowerCase().contains('too-many-requests')) {
+          _errorMessage = 'Too many login attempts. Please try again later';
+        } else {
+          _errorMessage = 'Login failed. Please check your credentials';
+        }
+      }
+    } catch (e) {
+      _errorMessage = 'An unexpected error occurred. Please try again';
     }
 
     _setLoading(false);
@@ -111,7 +129,17 @@ class AuthController extends ChangeNotifier {
       _justRegistered = true;
       _errorMessage = null;
     } else {
-      _errorMessage = result;
+      // Map registration errors
+      if (result.toLowerCase().contains('email-already-in-use') ||
+          result.toLowerCase().contains('already exists')) {
+        _errorMessage = 'An account with this email already exists';
+      } else if (result.toLowerCase().contains('weak-password')) {
+        _errorMessage = 'Password is too weak. Use at least 6 characters';
+      } else if (result.toLowerCase().contains('invalid-email')) {
+        _errorMessage = 'Invalid email address';
+      } else {
+        _errorMessage = 'Registration failed. Please try again';
+      }
     }
 
     _setLoading(false);
@@ -243,6 +271,10 @@ class AuthController extends ChangeNotifier {
         return 'Invalid email address';
       case 'too-many-requests':
         return 'Too many attempts. Try again later';
+      case 'wrong-password':
+        return 'Invalid password';
+      case 'invalid-credential':
+        return 'Invalid password';
       default:
         return e.message ?? 'Authentication failed';
     }

@@ -1,3 +1,4 @@
+import 'package:campus_notes_app/common_widgets/app_bar.dart';
 import 'package:campus_notes_app/features/authentication/presentation/controller/auth_controller.dart';
 import 'package:campus_notes_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -43,17 +44,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Theme.of(context).colorScheme.surface,
-          ),
-          onPressed: () => Navigator.pop(context),
-          tooltip: 'Back',
-        ),
+      appBar: const CustomAppBar(
+        text: 'About',
+        sideIcon: Icons.info_outline,
+        usePremiumBackIcon: true,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -88,10 +82,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         children: [
           const SizedBox(height: 20),
           Text(
-            'Forgot Password?',
+            'Reset Your Password',
             style: TextStyle(
-              color: Theme.of(context).colorScheme.surface,
-              fontSize: 28,
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -99,14 +93,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           Text(
             'Enter your email address and we\'ll send you a link to reset your password.',
             style: TextStyle(
-              color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.7),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
               fontSize: 16,
             ),
           ),
           const SizedBox(height: 40),
           Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(15),
             ),
             child: TextFormField(
@@ -215,7 +209,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         Text(
           'Check Your Email',
           style: TextStyle(
-            color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.onSurface,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
@@ -225,7 +219,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           'We\'ve sent a password reset link to',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Theme.of(context).colorScheme.surfaceContainerLowest.withValues(alpha: 0.7),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
             fontSize: 16,
           ),
         ),
@@ -234,7 +228,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           _emailController.text.trim(),
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.onSurface,
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -243,7 +237,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(15),
           ),
           child: Column(
